@@ -1,0 +1,54 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore
+        run: dotnet restore ConstrainCert.sln
+      - name: Test
+        run: dotnet test ConstrainCert.sln --configuration Release --no-restore
+      - name: Publish portable app
+        run: dotnet publish src/ConstrainCert.App/ConstrainCert.App.csproj --configuration Release --no-restore --output publish
+      - name: Refuse private keys in release files
+        shell: pwsh
+        run: |
+          $forbidden = Get-ChildItem publish -Recurse -File | Where-Object { $_.Extension -in '.key', '.pfx', '.p12', '.pem' }
+          if ($forbidden) { throw "Release contains forbidden key-like files: $($forbidden.FullName -join ', ')" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: constraincert-win-x64
+          path: publish/
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: verify
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: constraincert-win-x64
+          path: publish
+      - name: Create release archive
+        shell: pwsh
+        run: |
+          Compress-Archive -Path publish\* -DestinationPath constraincert-win-x64.zip
+          (Get-FileHash constraincert-win-x64.zip -Algorithm SHA256).Hash | Set-Content constraincert-win-x64.zip.sha256
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: gh release create $env:GITHUB_REF_NAME constraincert-win-x64.zip constraincert-win-x64.zip.sha256 --generate-notes
