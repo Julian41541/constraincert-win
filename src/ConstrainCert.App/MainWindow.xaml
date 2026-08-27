@@ -1,0 +1,36 @@
+<Window x:Class="ConstrainCert.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ConstrainCert" Height="520" Width="760" MinHeight="480" MinWidth="680"
+        WindowStartupLocation="CenterScreen">
+  <Grid Margin="28">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <StackPanel>
+      <TextBlock FontSize="26" FontWeight="SemiBold">Ограниченное доверие к сертификатам Минцифры</TextBlock>
+      <TextBlock Margin="0,8,0,0" TextWrapping="Wrap" Foreground="#555">Сертификаты Минцифры будут приниматься только для указанных доменов и их поддоменов.</TextBlock>
+    </StackPanel>
+    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,22,0,12">
+      <TextBox x:Name="DomainInput" Width="440" Height="32" Padding="8,4" VerticalContentAlignment="Center" />
+      <Button Margin="10,0,0,0" Width="110" Content="Добавить" Click="AddDomain_Click" />
+      <Button Margin="10,0,0,0" Width="130" Content="Набор Точка" Click="AddTochkaPreset_Click" />
+      <Button Margin="10,0,0,0" Width="150" Content="Удалить выбранный" Click="RemoveSelected_Click" />
+    </StackPanel>
+    <ListBox Grid.Row="2" x:Name="DomainList" DisplayMemberPath="." KeyDown="DomainList_KeyDown" />
+    <DockPanel Grid.Row="3" Margin="0,16,0,0">
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <TextBlock x:Name="StatusText" Foreground="#555" Text="Защита пока не установлена." />
+        <TextBlock Margin="12,0,0,0" Foreground="#777" Text="v0.1.0" />
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Width="115" Margin="0,0,10,0" Content="Удалить всё" Click="RemoveAll_Click" />
+        <Button Width="115" Margin="0,0,10,0" Content="Проверить" Click="Verify_Click" />
+        <Button Width="115" Content="Применить" Click="Apply_Click" />
+      </StackPanel>
+    </DockPanel>
+  </Grid>
+</Window>
