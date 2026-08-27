@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>ConstrainCert.Core</AssemblyName>
+    <RootNamespace>ConstrainCert.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MinDigitalRoot.der.base64" />
+  </ItemGroup>
+</Project>
