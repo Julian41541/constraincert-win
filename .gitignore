@@ -1,0 +1,8 @@
+bin/
+obj/
+.vs/
+.dotnet-home/
+publish-local/
+release-*/
+*.user
+*.suo
