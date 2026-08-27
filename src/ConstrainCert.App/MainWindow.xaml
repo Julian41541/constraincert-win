@@ -24,7 +24,7 @@
     <DockPanel Grid.Row="3" Margin="0,16,0,0">
       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
         <TextBlock x:Name="StatusText" Foreground="#555" Text="Защита пока не установлена." />
-        <TextBlock Margin="12,0,0,0" Foreground="#777" Text="v0.1.0" />
+        <TextBlock Margin="12,0,0,0" Foreground="#777" Text="v0.1.1" />
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
         <Button Width="115" Margin="0,0,10,0" Content="Удалить всё" Click="RemoveAll_Click" />
@@ -34,3 +34,4 @@
     </DockPanel>
   </Grid>
 </Window>
+
