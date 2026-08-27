@@ -47,8 +47,9 @@ jobs:
         run: |
           Compress-Archive -Path publish\* -DestinationPath constraincert-win-x64.zip
           (Get-FileHash constraincert-win-x64.zip -Algorithm SHA256).Hash | Set-Content constraincert-win-x64.zip.sha256
-      - name: Publish GitHub release
+      - name: Upload release assets
         env:
           GH_TOKEN: ${{ github.token }}
         shell: pwsh
-        run: gh release create $env:GITHUB_REF_NAME constraincert-win-x64.zip constraincert-win-x64.zip.sha256 --generate-notes
+        run: gh release upload $env:GITHUB_REF_NAME constraincert-win-x64.zip constraincert-win-x64.zip.sha256 --clobber
+
